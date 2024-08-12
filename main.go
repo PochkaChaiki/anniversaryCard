@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	dbmanager "server/dbManager"
 	img "server/imageProcessor"
 
 	// "image"
@@ -14,21 +15,18 @@ import (
 func main() {
 	fmt.Println("Starting server")
 
-	// f, err := os.Create("./scrap/txt.png")
-	// if err != nil {
-	// 	fmt.Printf("Error oqqured: %v", err)
-	// 	return
-	// }
-	// png.Encode(f, img)
-	// fmt.Println("Photo made")
-	// fmt.Printf("Photo name: %s\n", img)
 	http.HandleFunc("/", getImageHandler)
 	log.Fatal(http.ListenAndServe("localhost:8000", nil))
 }
 
 func getImageHandler(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
-	img, err := img.CreateImage("hello, World!")
+	cardText, err := dbmanager.GetString()
+	if err != nil {
+		fmt.Printf("Error oqqured: %v", err)
+		return
+	}
+	img, err := img.CreateImage(cardText)
 	if err != nil {
 		fmt.Printf("Error oqqured: %v", err)
 		return
