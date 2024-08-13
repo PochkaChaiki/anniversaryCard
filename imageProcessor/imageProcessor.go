@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	fontFile  = "/home/pochka/projects/anniversary_card/scrap/Xiomara-wWLw.ttf"
-	imageFile = "/home/pochka/projects/anniversary_card/scrap/picture.png"
+	fontFile  = "/home/pochka/projects/anniversary_card/static/Xiomara-wWLw.ttf"
+	imageFile = "./static/picture.png"
 	size      = 40
 )
 
