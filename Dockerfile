@@ -2,13 +2,9 @@ FROM golang:1.23rc2 AS build-stage
 
 WORKDIR /app
 
-COPY go.mod go.sum ./
-
-RUN go mod download
-
 COPY . ./
 
-RUN CGO_ENABLED=1 GOOS=linux go build -o go-server
+RUN go mod download && CGO_ENABLED=1 GOOS=linux go build -o go-server
 
 
 FROM gcr.io/distroless/base-debian12 AS build-release-stage
