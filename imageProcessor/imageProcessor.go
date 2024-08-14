@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	fontFile  = "/home/pochka/projects/anniversary_card/static/Xiomara-wWLw.ttf"
+	fontFile  = "./static/Xiomara-wWLw.ttf"
 	imageFile = "./static/picture.png"
 	size      = 40
 )
