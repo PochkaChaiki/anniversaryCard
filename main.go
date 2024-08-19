@@ -5,24 +5,54 @@ import (
 	dbmanager "server/dbManager"
 	img "server/imageProcessor"
 
+	"flag"
+	"html/template"
 	"image/png"
 	"log"
 	"net/http"
-	"os"
 )
 
-var port = os.Getenv("PORT")
+var (
+	address = flag.String("a", "127.0.0.1", "IP address of the host")
+	port    = flag.String("p", "8000", "Port number of the listening service")
+)
 
 func main() {
+	flag.Parse()
+
 	mux := http.NewServeMux()
 
 	imageHandler := http.HandlerFunc(getImageHandler)
+	staticHandler := http.HandlerFunc(getStaticHandler)
 
 	mux.Handle("/image", enableCORS(imageHandler))
-	mux.Handle("/", enableCORS(http.FileServer(http.Dir("./static"))))
+	mux.Handle("/", enableCORS(staticHandler))
 
-	log.Printf("Server listening on %s", port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), mux))
+	log.Printf("Server listening on %s:%s", *address, *port)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf("0.0.0.0:%s", *port), mux))
+}
+
+func getStaticHandler(w http.ResponseWriter, r *http.Request) {
+	templ, err := template.New("index.html").ParseFiles("./static/index.html")
+	if err != nil {
+		log.Print(err.Error())
+		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
+		return
+	}
+	data := struct {
+		IPAddress string
+		Port      string
+	}{
+		IPAddress: *address,
+		Port:      *port,
+	}
+	err = templ.Execute(w, data)
+	if err != nil {
+		log.Print(err.Error())
+		http.Error(w, http.StatusText(500), http.StatusInternalServerError)
+		return
+	}
+
 }
 
 func getImageHandler(w http.ResponseWriter, r *http.Request) {
