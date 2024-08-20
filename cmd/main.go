@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	dbmanager "server/dbManager"
-	img "server/imageProcessor"
+	dbmanager "server/internal/dbManager"
+	img "server/internal/imageProcessor"
 
 	"flag"
 	"html/template"
@@ -13,9 +13,11 @@ import (
 )
 
 var (
-	address = flag.String("a", "127.0.0.1", "IP address of the host")
+	address = flag.String("a", "localhost", "IP address of the host")
 	port    = flag.String("p", "8000", "Port number of the listening service")
 )
+
+// ./server -a <Public IP> -p <Open public port>
 
 func main() {
 	flag.Parse()
@@ -29,7 +31,7 @@ func main() {
 	mux.Handle("/", enableCORS(staticHandler))
 
 	log.Printf("Server listening on %s:%s", *address, *port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf("0.0.0.0:%s", *port), mux))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%s", *address, *port), mux))
 }
 
 func getStaticHandler(w http.ResponseWriter, r *http.Request) {
