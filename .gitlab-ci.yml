@@ -1,0 +1,39 @@
+default:
+  image: golang:1.23
+  before_script:
+    - go mod download
+  stages:
+    build
+    test
+    deploy
+
+build-job:
+  stage:
+    build
+  scripts:
+    - go build -o server ./cmd/main.go
+  artifacts:
+    paths:
+      - server
+      - static/
+      - app.db
+
+test-job:
+  stage:
+    test
+  scripts:
+    - echo "Testing Go...."
+
+
+
+deploy-job:
+  image:
+    docker:27.2.0-rc.1-dind
+  services:
+    - docker:27.2.0-rc.1-dind
+  stage:
+    deploy
+  scripts:
+    - docker login anniversary-card.cr.cloud.ru/anniversary-card -u $CLOUD_KEY_ID -p $CLOUD_KEY_SECRET
+    - docker build -t anniversary-card.cr.cloud.ru/anniversary-card:latest
+    - docker push anniversary-card.cr.cloud.ru/anniversary-card:latest
