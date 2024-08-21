@@ -1,11 +1,12 @@
+stages:
+  build
+  test
+  deploy
+
 default:
   image: golang:1.23
   before_script:
     - go mod download
-  stages:
-    build
-    test
-    deploy
 
 build-job:
   stage:
