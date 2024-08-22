@@ -1,16 +1,15 @@
+image: golang:1.23
+
 stages:
   - build
   - test
-  - deploy
-
-default:
-  image: golang:1.23
-  before_script:
-    - go mod download
+  - deploy  
 
 build-job:
   stage:
     build
+  before_script:
+    - go mod download
   script:
     - go build -o server ./cmd/main.go
   artifacts:
@@ -25,13 +24,9 @@ test-job:
   script:
     - echo "Testing Go...."
 
-
-
 deploy-job:
   image:
     docker:27.2.0-rc.1-dind
-  services:
-    - docker:27.2.0-rc.1-dind
   stage:
     deploy
   script:
