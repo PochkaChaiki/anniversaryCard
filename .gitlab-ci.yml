@@ -26,6 +26,10 @@ test-job:
 deploy-job:
   image:
     docker:27.2.0-rc.1-dind
+  services:
+    - docker:27.2.0-rc.1-dind
+  variables:
+    DOCKER_HOST: "tcp://docker:2375"
   stage:
     deploy
   script:
