@@ -29,7 +29,7 @@ deploy-job:
   services:
     - name: docker:27.2.0-rc.1-dind
       alias: docker
-      commant: ["--tls=false"]
+      command: ["--tls=false"]
     
   variables:
     DOCKER_HOST: tcp://docker:2375
