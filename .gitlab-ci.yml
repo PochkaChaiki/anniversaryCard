@@ -27,9 +27,13 @@ deploy-job:
   image:
     docker:27.2.0-rc.1-dind
   services:
-    - docker:27.2.0-rc.1-dind
+    - name: docker:27.2.0-rc.1-dind
+      alias: docker
+      commant: ["--tls=false"]
+    
   variables:
-    DOCKER_HOST: "tcp://docker:2375"
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
   stage:
     deploy
   script:
