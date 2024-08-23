@@ -25,9 +25,10 @@ test-job:
 
 deploy-job:
   image:
-    docker:dind
+    docker:19.03.0
   services:
-    - docker:dind
+    - name: docker:19.03.0-dind
+      alias: docker
   stage:
     deploy
   script:
