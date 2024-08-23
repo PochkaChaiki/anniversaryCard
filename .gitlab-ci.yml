@@ -27,16 +27,11 @@ deploy-job:
   image:
     docker:27.2.0-rc.1-dind
   services:
-    - name: docker:27.2.0-rc.1-dind
-      alias: docker
-      command: ["--tls=false"]
-    
-  variables:
-    DOCKER_HOST: tcp://docker:2375
-    DOCKER_TLS_CERTDIR: ""
+    - docker:27.2.0-rc.1-dind
   stage:
     deploy
   script:
+    - unset DOCKER_HOST
     - docker login anniversary-card.cr.cloud.ru/anniversary-card -u $CLOUD_KEY_ID -p $CLOUD_KEY_SECRET
     - docker build -t anniversary-card.cr.cloud.ru/anniversary-card:latest .
     - docker push anniversary-card.cr.cloud.ru/anniversary-card:latest
