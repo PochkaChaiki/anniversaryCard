@@ -24,8 +24,8 @@ func main() {
 	imageHandler := http.HandlerFunc(routeshandlers.GetImageHandler)
 	staticHandler := http.HandlerFunc(routeshandlers.GetStaticHandler(address, port))
 
-	mux.Handle("/image", routeshandlers.EnableCORS(imageHandler))
-	mux.Handle("/", routeshandlers.EnableCORS(staticHandler))
+	mux.Handle("GET /image", routeshandlers.EnableCORS(imageHandler))
+	mux.Handle("GET /", routeshandlers.EnableCORS(staticHandler))
 
 	log.Printf("Server listening on %s:%s", *address, *port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s" /**address,*/, *port), mux))
