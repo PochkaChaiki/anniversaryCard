@@ -31,13 +31,9 @@ deploy-job:
     docker:24.0.5  
   services:
     - docker:24.0.5-dind
-      # alias: docker
   stage:
     deploy
   script:
-    # - curl -sSL https://get.docker.com/ | sh
-    # - sudo usermod -aG docker gitlab-runner
-    # - systemctl start docker
     - docker login anniversary-card.cr.cloud.ru/anniversary-card -u $CLOUD_KEY_ID -p $CLOUD_KEY_SECRET
     - docker build -t anniversary-card.cr.cloud.ru/anniversary-card:latest .
     - docker push anniversary-card.cr.cloud.ru/anniversary-card:latest
