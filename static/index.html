@@ -361,7 +361,7 @@
                 camera.lookAt(new THREE.Vector3());
                 
                 loader.crossOrigin = 'anonymous';
-                let textureAddress = `{{ .IPAddress }}:{{ .Port }}`;
+                let textureAddress = `{{ .IPAddress }}`;//:{{ .Port }}`;
                 loader.load(`${textureAddress}/image`, texture => {
                     texture.magFilter = THREE.NearestFilter;
                     texture.minFilter = THREE.NearestFilter;
